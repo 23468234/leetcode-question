@@ -34,6 +34,9 @@ public:
             p2->next = p1;
             p1 = p2;
             p2 = p3;
+            if (p3 == nullptr){
+                break;
+            }
 
             p3 = p3->next;
         }
@@ -41,6 +44,7 @@ public:
         ListNode *section_head = p1;
         section_before->next = section_head;
         section_tail->next = p2;
+
         return dummy->next;        
     }
 };
