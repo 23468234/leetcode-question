@@ -19,7 +19,7 @@ public:
 
     bool dfs(vector<vector<char>>& board, int row, int column)
     {   
-        if (row == board.size() - 1 && column == board.size() - 1){
+        if (row == board.size() - 1 && column == board.size()){
             return true;
         }
 
@@ -29,11 +29,13 @@ public:
         }
 
         if (board[row][column] != '.'){
-             dfs(board, row, column + 1);
+            if (dfs(board, row, column + 1)) {
+                return true;
+            }
         }
         else{
         for (int i = 1; i < board.size() + 1; ++i){
-            if (!Insert(row, column, i - 1)){
+            if (!Insert(row, column, i)){
                 continue;
             }
 
@@ -42,7 +44,7 @@ public:
                 return true;
             }
             board[row][column] = '.';
-            Delete(row, column, i - 1);
+            Delete(row, column, i);
         }
         }
 
@@ -61,7 +63,7 @@ public:
                     continue;
                 }
 
-                if (!Insert(i, j, board[i][j] - '1')){
+                if (!Insert(i, j, board[i][j] - '0')){
                     return false;
                 }
             }
@@ -70,28 +72,30 @@ public:
     }
 
     bool Insert(int row, int column, int value){
-        if (mRow[row][value]){
+        int index = value -1;
+        if (mRow[row][index]){
             return false;
         }
         
-        if (mColumn[column][value]){
+        if (mColumn[column][index]){
             return false;
         }
 
-        if (mArea[row / 3 * 3 + column / 3][value]){
+        if (mArea[row / 3 * 3 + column / 3][index]){
             return false;
         }
 
-        mRow[row][value] = true;
-        mColumn[column][value] = true;
-        mArea[row / 3 * 3 + column / 3][value] = true;
+        mRow[row][index] = true;
+        mColumn[column][index] = true;
+        mArea[row / 3 * 3 + column / 3][index] = true;
         return true;
     }
 
     bool Delete(int row, int column, int value){
-        mRow[row][value] = false;
-        mColumn[column][value] = false;
-        mArea[row / 3 * 3 + column / 3][value] = false;
+        int index = value -1;
+        mRow[row][index] = false;
+        mColumn[column][index] = false;
+        mArea[row / 3 * 3 + column / 3][index] = false;
         return true;
     }
 };
